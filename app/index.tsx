@@ -1,13 +1,19 @@
 import { StatusBar } from 'expo-status-bar';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react';
+import { Link } from 'expo-router';
 
 
-export default function App() {
+export default function HomeScreen() {
   const [likes, setLikes] = useState(0)
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Hello, World!</Text>
+      <Link href="/events" asChild>
+        <Pressable style={styles.button}>
+          <Text style={styles.word}>Events</Text>
+        </Pressable>
+      </Link>
       <Text style={styles.title}>Oralbekuly Aibol</Text>
       <Text style={styles.badword}>Likes: {likes}</Text>
       <Pressable style={styles.button} onPress={() => setLikes(likes + 1)}><Text style={styles.word}>Like</Text></Pressable>
