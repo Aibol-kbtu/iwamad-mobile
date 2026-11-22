@@ -3,13 +3,13 @@ import EventRow from '../../src/components/EventRow';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useEvents } from '../../src/hooks/useEvents';
-import { useSavedIds } from "../../src/hooks/useSavedIds";
+import { useSavedIds } from '../../src/hooks/useSavedIds';
 
 export default function EventsScreen() {
     const {data,isPending,isError,error,refetch,isRefetching} = useEvents();
     const router = useRouter();
     const [query, setQuery] = useState('');
-    const { savedIds, toggleSaved: toggleSavedEvent } = useSavedIds();
+    const { savedIds, toggleSaved } = useSavedIds();
 
     if (isPending) {
         return (
@@ -35,8 +35,7 @@ export default function EventsScreen() {
     }
 
     const shown = data.filter((e) =>
-        e.title.toLowerCase().includes(query.toLowerCase())
-    );
+        e.title.toLowerCase().includes(query.toLowerCase()));
 
     return (
         <View style={{ flex: 1, paddingTop: 50 }}>
@@ -52,7 +51,7 @@ export default function EventsScreen() {
                 onRefresh={() => refetch()}
                 ListHeaderComponent={
                     <Text style={{ fontSize: 24, fontWeight: 'bold', margin: 10 }}>
-                        Long-press an event to save it. Saved: {savedIds.length}
+                        Swipe or long-press an event to save it. Saved: {savedIds.length}
                     </Text>
                 }
                 ListEmptyComponent={
@@ -64,7 +63,7 @@ export default function EventsScreen() {
                     <EventRow
                         event={item}
                         onPress={() => router.push(`/events/${item.id}`)}
-                        onLongPress={() => toggleSavedEvent(item.id)}
+                        onToggleSaved={() => toggleSaved(item.id)}
                         Saved={savedIds.includes(item.id)}
                     />
                 )}
