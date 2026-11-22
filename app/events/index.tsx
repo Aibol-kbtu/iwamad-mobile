@@ -3,12 +3,13 @@ import EventRow from '../../src/components/EventRow';
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useEvents } from '../../src/hooks/useEvents';
+import { useSavedIds } from "../../src/hooks/useSavedIds";
 
 export default function EventsScreen() {
     const {data,isPending,isError,error,refetch,isRefetching} = useEvents();
     const router = useRouter();
     const [query, setQuery] = useState('');
-    const [savedIds, setSavedEvents] = useState<number[]>([]);
+    const { savedIds, toggleSaved: toggleSavedEvent } = useSavedIds();
 
     if (isPending) {
         return (
@@ -32,13 +33,6 @@ export default function EventsScreen() {
             </View>
         );
     }
-    const toggleSavedEvent = (eventId: number) => {
-        if (savedIds.includes(eventId)) {
-            setSavedEvents(savedIds.filter(id => id !== eventId));
-        } else {
-            setSavedEvents([...savedIds, eventId]);
-        }
-    };
 
     const shown = data.filter((e) =>
         e.title.toLowerCase().includes(query.toLowerCase())
